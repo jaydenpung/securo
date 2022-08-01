@@ -11,9 +11,9 @@ export class FundDTO {
     const dto = new FundDTO();
     dto.id = fund.id;
     dto.fundName = fund.fundName || null;
-    dto.minimumInvestAmount = fund.minimumInvestAmount || 0;
+    dto.minimumInvestAmount = +fund.minimumInvestAmount || 0;
     dto.fundDescription = fund.fundDescription || null;
-    dto.fundInvestmentBalance = fund.fundInvestmentBalance || 0;
+    dto.fundInvestmentBalance = +fund.fundInvestmentBalance || 0;
 
     return dto;
   }

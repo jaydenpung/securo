@@ -1,16 +1,16 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('Customer')
-export class Customer {
+@Entity('Fund_Allocation')
+export class FundAllocation {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  name: string;
+  customerId: number;
 
-  @Column({ unique: true })
-  emailAddress: string;
+  @Column()
+  fundId: number;
 
   @Column({ type: 'numeric', precision: 20, scale: 2 })
-  accountWalletAmount: number;
+  balance: number;
 }

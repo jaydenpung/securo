@@ -11,7 +11,7 @@ export class CustomerDTO {
     dto.id = customer.id;
     dto.name = customer.name || null;
     dto.emailAddress = customer.emailAddress || null;
-    dto.accountWalletAmount = customer.accountWalletAmount || 0;
+    dto.accountWalletAmount = +customer.accountWalletAmount || 0;
 
     return dto;
   }
