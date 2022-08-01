@@ -3,6 +3,7 @@ service: securo-lambda
 frameworkVersion: '3'
 
 plugins:
+  - serverless-offline
   - serverless-jetpack
 
 provider:
