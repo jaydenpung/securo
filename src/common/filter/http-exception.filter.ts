@@ -22,7 +22,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
         },
       });
     } else {
-      response.status(status).json(exception.getResponse());
+      response.status(status).json({
+        success: false,
+        data: null,
+        error: {
+          type: exception.name,
+          description: exception.message,
+        },
+      });
     }
   }
 }
