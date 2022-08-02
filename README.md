@@ -4,7 +4,8 @@
 
 - API documentation available at (here)[https://documenter.getpostman.com/view/10698630/UzkV1GHN]
 
-- Create tables by setting synchronize of TypeOrmModule to true<img width="445" alt="image" src="https://user-images.githubusercontent.com/46307126/182480778-5dae3399-c47f-4a61-be42-aa2281314100.png">
+- Create tables by setting synchronize of TypeOrmModule to true at app.module.ts
+<img width="445" alt="image" src="https://user-images.githubusercontent.com/46307126/182480778-5dae3399-c47f-4a61-be42-aa2281314100.png">
 
 - Alternatively, run the following queries:
 
@@ -41,3 +42,6 @@ CREATE TABLE `Trade_History` (
   CONSTRAINT `FK_b166617dc48751a063f3164f4ce` FOREIGN KEY (`customer_id`) REFERENCES `Customer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
+
+## TODO
+- Handle numbers and decimals of monetary value
