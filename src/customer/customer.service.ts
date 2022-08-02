@@ -33,7 +33,10 @@ export class CustomerService {
   }
 
   async findOne(id: number): Promise<Customer> {
-    const customer = await this.customerRepository.findOneBy({ id: id });
+    const customer = await this.customerRepository.findOne({
+      where: { id },
+      relations: ['tradeHistories'],
+    });
 
     if (!customer) {
       throw new NotFoundException();

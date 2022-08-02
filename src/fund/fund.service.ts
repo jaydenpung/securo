@@ -25,7 +25,9 @@ export class FundService {
   }
 
   async findOne(id: number): Promise<Fund> {
-    const fund = await this.fundRepository.findOneBy({ id: id });
+    const fund = await this.fundRepository.findOne({
+      where: { id },
+    });
 
     if (!fund) {
       throw new NotFoundException();
