@@ -12,7 +12,7 @@ export class Customer {
   @Column({ unique: true })
   emailAddress: string;
 
-  @Column({ type: 'numeric', precision: 20, scale: 2 })
+  @Column('decimal', { precision: 15, scale: 2, default: 0 })
   accountWalletAmount: number;
 
   @OneToMany(() => TradeHistory, (tradeHistory) => tradeHistory.customer)

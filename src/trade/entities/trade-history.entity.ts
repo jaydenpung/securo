@@ -8,13 +8,13 @@ export class TradeHistory {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'numeric', precision: 20, scale: 2 })
+  @Column('decimal', { precision: 15, scale: 2, default: 0 })
   startingBalance: number;
 
-  @Column({ type: 'numeric', precision: 20, scale: 2 })
+  @Column('decimal', { precision: 15, scale: 2, default: 0 })
   endingBalance: number;
 
-  @Column({ type: 'numeric', precision: 20, scale: 2 })
+  @Column('decimal', { precision: 15, scale: 2, default: 0 })
   transactionAmount: number;
 
   @Column()

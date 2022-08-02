@@ -8,12 +8,12 @@ export class Fund {
   @Column()
   fundName: string;
 
-  @Column({ type: 'numeric', precision: 20, scale: 2 })
+  @Column('decimal', { precision: 15, scale: 2, default: 0 })
   minimumInvestAmount: number;
 
   @Column()
   fundDescription: string;
 
-  @Column({ type: 'numeric', precision: 20, scale: 2 })
+  @Column('decimal', { precision: 15, scale: 2, default: 0 })
   fundInvestmentBalance: number;
 }
