@@ -1,4 +1,5 @@
 export class BalanceDto {
-  fundBalance: number;
-  walletBalance: number;
+  userFund: number;
+  userWallet: number;
+  fundOverall: number;
 }

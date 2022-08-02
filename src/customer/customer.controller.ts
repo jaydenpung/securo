@@ -32,8 +32,7 @@ export class CustomerController {
 
   @Get(':id')
   async findOne(@Param() { id }: IdParameterDTO) {
-    const customer = await this.customerService.findOne(id);
-    return CustomerDTO.mutate(customer);
+    return await this.customerService.findOne(id);
   }
 
   @Patch(':id')

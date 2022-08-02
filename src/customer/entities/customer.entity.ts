@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { TradeHistory } from 'src/trade/entities/trade-history.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('Customer')
 export class Customer {
@@ -13,4 +14,7 @@ export class Customer {
 
   @Column({ type: 'numeric', precision: 20, scale: 2 })
   accountWalletAmount: number;
+
+  @OneToMany(() => TradeHistory, (tradeHistory) => tradeHistory.customer)
+  tradeHistories: TradeHistory[];
 }

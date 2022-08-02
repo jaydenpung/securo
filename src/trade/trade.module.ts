@@ -5,13 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Fund } from 'src/fund/entities/fund.entity';
 import { Customer } from 'src/customer/entities/customer.entity';
 import { TradeHistory } from './entities/trade-history.entity';
-import { FundAllocation } from './entities/fund-allocation.entity';
+import { FundService } from 'src/fund/fund.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Fund, Customer, TradeHistory, FundAllocation]),
-  ],
+  imports: [TypeOrmModule.forFeature([Fund, Customer, TradeHistory])],
   controllers: [TradeController],
-  providers: [TradeService],
+  providers: [TradeService, FundService],
 })
 export class TradeModule {}

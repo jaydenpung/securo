@@ -1,5 +1,7 @@
 import { TransactionType } from 'src/common/enum/transaction-type';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Customer } from 'src/customer/entities/customer.entity';
+import { Fund } from 'src/fund/entities/fund.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('Trade_History')
 export class TradeHistory {
@@ -12,12 +14,6 @@ export class TradeHistory {
   @Column({ type: 'numeric', precision: 20, scale: 2 })
   endingBalance: number;
 
-  @Column()
-  customerId: number;
-
-  @Column()
-  fundId: number;
-
   @Column({ type: 'numeric', precision: 20, scale: 2 })
   transactionAmount: number;
 
@@ -26,4 +22,10 @@ export class TradeHistory {
 
   @Column()
   transactionType: TransactionType;
+
+  @Column()
+  fundId: number;
+
+  @ManyToOne(() => Customer, (customer) => customer.tradeHistories)
+  customer: Customer;
 }
