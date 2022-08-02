@@ -2,7 +2,7 @@
 
 ## Getting Started:
 
-- API documentation available at (here)[https://documenter.getpostman.com/view/10698630/UzkV1GHN]
+- API documentation available at [here](https://documenter.getpostman.com/view/10698630/UzkV1GHN)
 
 - Create tables by setting synchronize of TypeOrmModule to true at app.module.ts
 <img width="445" alt="image" src="https://user-images.githubusercontent.com/46307126/182480778-5dae3399-c47f-4a61-be42-aa2281314100.png">
