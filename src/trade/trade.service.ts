@@ -12,6 +12,7 @@ import { FundTransactionDto } from './dto/fund-transaction.dto';
 import { WalletTransactionDto } from './dto/wallet-transaction.dto';
 import { TradeHistory } from './entities/trade-history.entity';
 import { FundService } from 'src/fund/fund.service';
+import { ViewCustomerDTO } from 'src/customer/dto/view-customer.dto';
 
 @Injectable()
 export class TradeService {
@@ -52,12 +53,10 @@ export class TradeService {
       throw new CustomGeneralException('Unable to create transaction');
     }
 
-    return await this.customerRepository.save({
-      id: customer.id,
-      accountWalletAmount:
-        +customer.accountWalletAmount + +walletTransaction.amount,
-      tradeHistories: [...customer.tradeHistories, tradeHistory],
-    });
+    customer.accountWalletAmount =
+      +customer.accountWalletAmount + +walletTransaction.amount;
+    customer.tradeHistories.push(tradeHistory);
+    return await this.customerRepository.save(customer);
   }
 
   async withdrawWallet(
@@ -90,15 +89,13 @@ export class TradeService {
       throw new CustomGeneralException('Unable to create transaction');
     }
 
-    return await this.customerRepository.save({
-      id: customer.id,
-      accountWalletAmount:
-        +customer.accountWalletAmount - +walletTransaction.amount,
-      tradeHistories: [...customer.tradeHistories, tradeHistory],
-    });
+    customer.accountWalletAmount =
+      +customer.accountWalletAmount - +walletTransaction.amount;
+    customer.tradeHistories.push(tradeHistory);
+    return await this.customerRepository.save(customer);
   }
 
-  async depositFund(fundTransaction: FundTransactionDto): Promise<BalanceDto> {
+  async depositFund(fundTransaction: FundTransactionDto): Promise<CustomerDTO> {
     // customer
     const customer = await this.customerRepository.findOne({
       where: {
@@ -154,16 +151,24 @@ export class TradeService {
       fundInvestmentBalance: balance.fundOverall,
     });
 
-    await this.customerRepository.save({
-      id: customer.id,
-      accountWalletAmount: balance.userWallet,
-      tradeHistories: [...customer.tradeHistories, tradeHistory],
-    });
+    customer.accountWalletAmount = balance.userWallet;
+    customer.tradeHistories.push(tradeHistory);
+    await this.customerRepository.save(customer);
 
-    return balance;
+    const viewCustomerDTO = customer as ViewCustomerDTO;
+    viewCustomerDTO.fundAllocations = allFundAllocations.map((allocation) => {
+      if (allocation.id == fund.id) {
+        allocation.userInvestedBalance = balance.userFund;
+        allocation.fundInvestmentBalance = balance.fundOverall;
+      }
+      return allocation;
+    });
+    return viewCustomerDTO;
   }
 
-  async withdrawFund(fundTransaction: FundTransactionDto): Promise<BalanceDto> {
+  async withdrawFund(
+    fundTransaction: FundTransactionDto,
+  ): Promise<ViewCustomerDTO> {
     // customer
     const customer = await this.customerRepository.findOne({
       where: { id: fundTransaction.customerId },
@@ -221,12 +226,18 @@ export class TradeService {
       fundInvestmentBalance: balance.fundOverall,
     });
 
-    await this.customerRepository.save({
-      id: customer.id,
-      accountWalletAmount: balance.userWallet,
-      tradeHistories: [...customer.tradeHistories, tradeHistory],
-    });
+    customer.accountWalletAmount = balance.userWallet;
+    customer.tradeHistories.push(tradeHistory);
+    await this.customerRepository.save(customer);
 
-    return balance;
+    const viewCustomerDTO = customer as ViewCustomerDTO;
+    viewCustomerDTO.fundAllocations = allFundAllocations.map((allocation) => {
+      if (allocation.id == fund.id) {
+        allocation.userInvestedBalance = balance.userFund;
+        allocation.fundInvestmentBalance = balance.fundOverall;
+      }
+      return allocation;
+    });
+    return viewCustomerDTO;
   }
 }

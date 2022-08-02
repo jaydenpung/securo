@@ -2,7 +2,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ValidationException } from 'src/common/exception/validation.exception';
 import { FundService } from 'src/fund/fund.service';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { ViewCustomerDTO } from './dto/view-customer.dto';
@@ -69,6 +69,7 @@ export class CustomerService {
     if (updateCustomerDto.emailAddress) {
       const duplicate = await this.customerRepository.findOneBy({
         emailAddress: updateCustomerDto.emailAddress,
+        id: Not(id),
       });
 
       if (duplicate) {
