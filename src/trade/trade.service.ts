@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TransactionType } from 'src/common/enum/transaction-type';
 import { CustomGeneralException } from 'src/common/exception/custom-general.exception';
@@ -6,16 +6,18 @@ import { ValidationException } from 'src/common/exception/validation.exception';
 import { CustomerDTO } from 'src/customer/dto/customer.dto';
 import { Customer } from 'src/customer/entities/customer.entity';
 import { Fund } from 'src/fund/entities/fund.entity';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { BalanceDto } from './dto/balance.dto';
-import { FundAllocationDto } from './dto/fund-allocation.dto';
 import { FundTransactionDto } from './dto/fund-transaction.dto';
 import { WalletTransactionDto } from './dto/wallet-transaction.dto';
 import { TradeHistory } from './entities/trade-history.entity';
+import { FundService } from 'src/fund/fund.service';
 
 @Injectable()
 export class TradeService {
   constructor(
+    @Inject(FundService)
+    private fundService: FundService,
     @InjectRepository(Customer)
     private customerRepository: Repository<Customer>,
     @InjectRepository(Fund)
@@ -124,11 +126,11 @@ export class TradeService {
       );
     }
 
-    const allFundAllocations = await this.getCustomerFundAllocations(
+    const allFundAllocations = await this.fundService.getFundAllocations(
       customer.tradeHistories,
     );
     const fundAllocation = allFundAllocations.find((el) => {
-      return el.fundId == fund.id;
+      return el.id == fund.id;
     });
 
     const balance = {
@@ -179,11 +181,11 @@ export class TradeService {
       throw new NotFoundException('Fund not found');
     }
 
-    const allFundAllocations = await this.getCustomerFundAllocations(
+    const allFundAllocations = await this.fundService.getFundAllocations(
       customer.tradeHistories,
     );
     const fundAllocation = allFundAllocations.find((el) => {
-      return el.fundId == fund.id;
+      return el.id == fund.id;
     });
 
     if (!fundAllocation) {
@@ -226,41 +228,5 @@ export class TradeService {
     });
 
     return balance;
-  }
-
-  async getCustomerFundAllocations(
-    tradeHistories: TradeHistory[],
-  ): Promise<FundAllocationDto[]> {
-    // group by fundId
-    const results = tradeHistories.reduce((a, b) => {
-      (a[b.fundId] = a[b.fundId] || []).push(b);
-      return a;
-    }, {});
-
-    const funds = await this.fundRepository.findBy({
-      id: In(Object.keys(results)),
-    });
-
-    const fundAllocations = [];
-    for (const fund of funds) {
-      const fundAllocation = new FundAllocationDto();
-      fundAllocation.fundId = fund.id;
-      fundAllocation.fundDescription = fund.fundDescription;
-      fundAllocation.fundName = fund.fundName;
-      fundAllocation.fundInvestmentBalance = fund.fundInvestmentBalance;
-      fundAllocation.minimumInvestAmount = fund.minimumInvestAmount;
-      const tradeHistories = results[fundAllocation.fundId] as TradeHistory[];
-      fundAllocation.userInvestedBalance = tradeHistories.reduce((a, b) => {
-        if (b.transactionType === TransactionType.DEPOSIT_FUND) {
-          return +a + +b.transactionAmount;
-        } else if (b.transactionType === TransactionType.WITHDRAW_FUND) {
-          return +a - +b.transactionAmount;
-        }
-      }, 0);
-      fundAllocations.push(fundAllocation);
-    }
-
-    console.log(fundAllocations);
-    return fundAllocations;
   }
 }
