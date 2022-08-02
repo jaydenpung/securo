@@ -1,7 +1,8 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateFundDto {
   @IsString()
+  @IsNotEmpty()
   fundName: string;
 
   @IsOptional()
@@ -9,5 +10,6 @@ export class CreateFundDto {
   minimumInvestAmount: number;
 
   @IsString()
+  @IsNotEmpty()
   fundDescription: string;
 }

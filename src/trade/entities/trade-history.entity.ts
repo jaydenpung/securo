@@ -23,7 +23,7 @@ export class TradeHistory {
   @Column()
   transactionType: TransactionType;
 
-  @Column()
+  @Column({ nullable: true })
   fundId: number;
 
   @ManyToOne(() => Customer, (customer) => customer.tradeHistories)

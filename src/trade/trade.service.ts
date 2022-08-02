@@ -13,6 +13,7 @@ import { WalletTransactionDto } from './dto/wallet-transaction.dto';
 import { TradeHistory } from './entities/trade-history.entity';
 import { FundService } from 'src/fund/fund.service';
 import { ViewCustomerDTO } from 'src/customer/dto/view-customer.dto';
+import { FundAllocationDto } from 'src/fund/dto/fund-allocation.dto';
 
 @Injectable()
 export class TradeService {
@@ -126,13 +127,17 @@ export class TradeService {
     const allFundAllocations = await this.fundService.getFundAllocations(
       customer.tradeHistories,
     );
-    const fundAllocation = allFundAllocations.find((el) => {
-      return el.id == fund.id;
-    });
+    const fundAllocation = FundAllocationDto.mutate(
+      allFundAllocations.find((el) => {
+        return el.id == fund.id;
+      }),
+    );
 
     const balance = {
       userWallet: +customer.accountWalletAmount - +fundTransaction.amount,
-      userFund: +fundAllocation.userInvestedBalance + +fundTransaction.amount,
+      userFund: fundAllocation
+        ? +fundAllocation.userInvestedBalance + +fundTransaction.amount
+        : +fundTransaction.amount,
       fundOverall: +fund.fundInvestmentBalance + +fundTransaction.amount,
     } as BalanceDto;
 
@@ -163,6 +168,7 @@ export class TradeService {
       }
       return allocation;
     });
+
     return viewCustomerDTO;
   }
 
@@ -189,9 +195,11 @@ export class TradeService {
     const allFundAllocations = await this.fundService.getFundAllocations(
       customer.tradeHistories,
     );
-    const fundAllocation = allFundAllocations.find((el) => {
-      return el.id == fund.id;
-    });
+    const fundAllocation = FundAllocationDto.mutate(
+      allFundAllocations.find((el) => {
+        return el.id == fund.id;
+      }),
+    );
 
     if (!fundAllocation) {
       throw new ValidationException('Insufficient balance in fund');
@@ -214,6 +222,7 @@ export class TradeService {
       transactionAmount: fundTransaction.amount,
       transactionDate: new Date(),
       transactionType: TransactionType.WITHDRAW_FUND,
+      fundId: fundTransaction.fundId,
     });
 
     if (!tradeHistory) {

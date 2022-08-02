@@ -94,7 +94,7 @@ export class FundService {
           return +a - +b.transactionAmount;
         }
       }, 0);
-      fundAllocations.push(fundAllocation);
+      fundAllocations.push(FundAllocationDto.mutate(fundAllocation));
     }
 
     return fundAllocations;
