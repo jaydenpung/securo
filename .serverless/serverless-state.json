@@ -173,7 +173,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/securo-lambda/dev/1659359628304-2022-08-01T13:13:48.304Z/securo-lambda.zip"
+                "S3Key": "serverless/securo-lambda/dev/1659478915917-2022-08-02T22:21:55.917Z/securo-lambda.zip"
               },
               "Handler": "dist/lambda.handler",
               "Runtime": "nodejs16.x",
@@ -191,14 +191,14 @@
               "ApiLogGroup"
             ]
           },
-          "ApiLambdaVersionVd9Dg4N8h9Bx9tqmksuv8zLYqCVQNcVmtvTswK7U": {
+          "ApiLambdaVersion1AMFTaGqtuCPHPberdCbzRr6ItjsklemGIZJZmYdDdg": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "2KjtELXI0Rl8F+P/6mvRpokXGt4D0Zci9d8tRZDKY+w="
+              "CodeSha256": "rHku6DWCyFy+CizExNyWxFDTyoFUM+ECcq0p9TSzM5Y="
             }
           },
           "ApiGatewayRestApi": {
@@ -274,7 +274,7 @@
               "ApiLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1659359624778": {
+          "ApiGatewayDeployment1659478907632": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -336,7 +336,7 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersionVd9Dg4N8h9Bx9tqmksuv8zLYqCVQNcVmtvTswK7U"
+              "Ref": "ApiLambdaVersion1AMFTaGqtuCPHPberdCbzRr6ItjsklemGIZJZmYdDdg"
             },
             "Export": {
               "Name": "sls-securo-lambda-dev-ApiLambdaFunctionQualifiedArn"
@@ -455,6 +455,7 @@
       "vpc": {}
     },
     "plugins": [
+      "serverless-offline",
       "serverless-jetpack"
     ],
     "pluginsData": {},
@@ -476,7 +477,7 @@
         "timeout": 6,
         "runtime": "nodejs16.x",
         "vpc": {},
-        "versionLogicalId": "ApiLambdaVersionVd9Dg4N8h9Bx9tqmksuv8zLYqCVQNcVmtvTswK7U"
+        "versionLogicalId": "ApiLambdaVersion1AMFTaGqtuCPHPberdCbzRr6ItjsklemGIZJZmYdDdg"
       }
     },
     "configValidationMode": "warn",
@@ -498,7 +499,7 @@
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/securo-lambda/dev/1659359628304-2022-08-01T13:13:48.304Z",
+    "artifactDirectoryName": "serverless/securo-lambda/dev/1659478915917-2022-08-02T22:21:55.917Z",
     "artifact": "securo-lambda.zip"
   }
 }

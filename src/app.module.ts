@@ -20,6 +20,7 @@ import { TradeModule } from './trade/trade.module';
       database: process.env.DB_NAME,
       autoLoadEntities: true,
       namingStrategy: new SnakeNamingStrategy(),
+      synchronize: true,
     }),
     CustomerModule,
     FundModule,
