@@ -124,7 +124,7 @@ export class TradeService {
       );
     }
 
-    const allFundAllocations = await this.fundService.getFundAllocations(
+    let allFundAllocations = await this.fundService.getFundAllocations(
       customer.tradeHistories,
     );
     const fundAllocation = FundAllocationDto.mutate(
@@ -160,6 +160,9 @@ export class TradeService {
     customer.tradeHistories.push(tradeHistory);
     await this.customerRepository.save(customer);
 
+    allFundAllocations = await this.fundService.getFundAllocations(
+      customer.tradeHistories,
+    );
     const viewCustomerDTO = customer as ViewCustomerDTO;
     viewCustomerDTO.fundAllocations = allFundAllocations.map((allocation) => {
       if (allocation.id == fund.id) {
